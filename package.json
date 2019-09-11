@@ -1,0 +1,19 @@
+{
+  "name": "gamequantico",
+  "version": "1.0.0",
+  "description": "TCC Computação Quântica ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Geosouz1/Qu-ntico.git"
+  },
+  "author": "Geovani Moreira de Souza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Geosouz1/Qu-ntico/issues"
+  },
+  "homepage": "https://github.com/Geosouz1/Qu-ntico#readme"
+}
