@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Geosouz1/Qu-ntico/issues"
   },
-  "homepage": "https://github.com/Geosouz1/Qu-ntico#readme"
+  "homepage": "https://github.com/Geosouz1/Qu-ntico#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
 }
