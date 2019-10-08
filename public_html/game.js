@@ -183,7 +183,7 @@ class Game{
 	loadNextAnim(loader){
 		let anim = this.anims.pop();
 		const game = this;
-		loader.load( `${this.assetsPath}fbx/anims/${anim}.fbx`, function( object ){
+		loader.load( `${this.assetsPath}fbx/NewAnims/${anim}.fbx`, function( object ){
 			game.player.animations[anim] = object.animations[0];
 			if (game.anims.length>0){
 				game.loadNextAnim(loader);
@@ -464,7 +464,8 @@ class Player{
 			
 			const textureLoader = new THREE.TextureLoader();
 			
-			textureLoader.load(`${game.assetsPath}images/SimplePeople_${model}_${colour}.png`, function(texture){
+			// textureLoader.load(`${game.assetsPath}newPeople/SimplePeople_${model}_${colour}.png`, function(texture){
+			textureLoader.load(`${game.assetsPath}fbx/newPeople/girl.jpg`, function(texture){
 				object.traverse( function ( child ) {
 					if ( child.isMesh ){
 						child.material.map = texture;
