@@ -7,7 +7,8 @@ class DuplaFenda {
 console.log(this.assetsPath);
         const loader = new THREE.FBXLoader();
 
-            loader.load(`${this.assetsPath}fbx/objects/computadorQuantico.fbx`, function(object){
+            loader.load(`${this.assetsPath}fbx/objects/duplaFenda2.fbx`, function(object){
+                // object.position.set(3000, 0, 0)
                 game.environment = object;
                 game.colliders = [];
                 game.scene.add(object);

@@ -3,12 +3,12 @@ class Game{
 		if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 		this.modes = Object.freeze({
-			NONE:   Symbol("none"),
-			PRELOAD: Symbol("preload"),
-			INITIALISING:  Symbol("initialising"),
-			CREATING_LEVEL: Symbol("creating_level"),
-			ACTIVE: Symbol("active"),
-			GAMEOVER: Symbol("gameover")
+			// NONE:   Symbol("none"),
+			// PRELOAD: Symbol("preload"),
+			// INITIALISING:  Symbol("initialising"),
+			// CREATING_LEVEL: Symbol("creating_level"),
+			// ACTIVE: Symbol("active"),
+			// GAMEOVER: Symbol("gameover")
 		});
 		this.mode = this.modes.NONE;
 		
@@ -39,19 +39,12 @@ class Game{
 		this.container.style.height = '100%';
 		document.body.appendChild( this.container );
 		
-		const sfxExt = SFX.supportsAudioType('mp3') ? 'mp3' : 'ogg';
         
 		const game = this;
 		this.anims = ['Walking', 'Walking Backwards', 'Turn', 'Running','Talking', 'Pointing Gesture'];
 		
 		const options = {
 			assets:[
-				`${this.assetsPath}images/nx.jpg`,
-				`${this.assetsPath}images/px.jpg`,
-				`${this.assetsPath}images/ny.jpg`,
-				`${this.assetsPath}images/py.jpg`,
-				`${this.assetsPath}images/nz.jpg`,
-				`${this.assetsPath}images/pz.jpg`
 			],
 			oncomplete: function(){
 				game.init();
@@ -59,7 +52,7 @@ class Game{
 		}
 		
 		this.anims.forEach( function(anim){ options.assets.push(`${game.assetsPath}fbx/newAnims/${anim}.fbx`)});
-		options.assets.push(`${game.assetsPath}fbx/escola10.fbx`);
+		options.assets.push(`${game.assetsPath}fbx/escola12.fbx`);
 		
 		this.mode = this.modes.PRELOAD;
 		
@@ -90,13 +83,14 @@ class Game{
 	init() {
 		this.mode = this.modes.INITIALISING;
 
-		this.camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 500, 20000 );
+		this.camera = new THREE.PerspectiveCamera( 43, window.innerWidth / window.innerHeight, 300, 20000 );
 		
 		this.scene = new THREE.Scene();
-		this.scene.background = new THREE.Color( 0x00a0f0 );
+		// this.scene.background = new THREE.Color( 0x00a0f0 );
 
-		 const ambient = new THREE.AmbientLight( 0xaaaaaa );
-         this.scene.add( ambient );
+		//   const ambient = new THREE.AmbientLight( 0x000000 );
+		 const ambient = new THREE.AmbientLight( 0x000000 );
+          this.scene.add( ambient );
 
         const light = new THREE.DirectionalLight( 0xaaaaaa );
         light.position.set( 30, 100, 40 );
@@ -115,7 +109,7 @@ class Game{
         light.shadow.mapSize.height = 1024;
 		
 		this.sun = light;
-		this.scene.add(light);
+		 this.scene.add(light);
 
 		// model
 		const loader = new THREE.FBXLoader();
@@ -152,8 +146,7 @@ class Game{
 	
 	loadEnvironment(loader){
 		const game = this;
-		loader.load(`${this.assetsPath}fbx/escola10
-		.fbx`, function(object){
+		loader.load(`${this.assetsPath}fbx/escola12.fbx`, function(object){
 			game.environment = object;
 			game.colliders = [];
 			game.scene.add(object);
@@ -231,7 +224,7 @@ class Game{
 		front.position.set(112, 100, 600);
 		front.parent = this.player.object;
 		const back = new THREE.Object3D();
-		back.position.set(0, 300, -1050);
+		back.position.set(0, 150, -700);
 		back.parent = this.player.object;
 		const chat = new THREE.Object3D();
 		chat.position.set(0, 200, -450);
