@@ -16,6 +16,8 @@ class Game{
 		this.player;
 		this.duplaFenda;
 		this.cameras;
+		this.listener;
+		this.positionalAudio;
 		this.camera;
 		this.scene;
 		this.renderer;
@@ -52,7 +54,7 @@ class Game{
 		}
 		
 		this.anims.forEach( function(anim){ options.assets.push(`${game.assetsPath}fbx/newAnims/${anim}.fbx`)});
-		options.assets.push(`${game.assetsPath}fbx/escola12.fbx`);
+		options.assets.push(`${game.assetsPath}fbx/town.fbx`);
 		
 		this.mode = this.modes.PRELOAD;
 		
@@ -83,16 +85,20 @@ class Game{
 	init() {
 		this.mode = this.modes.INITIALISING;
 
-		this.camera = new THREE.PerspectiveCamera( 43, window.innerWidth / window.innerHeight, 300, 20000 );
+		this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 300, 20000 );
+
+		this.listener = new THREE.AudioListener();
+		
+		this.camera.add(this.listener);
 		
 		this.scene = new THREE.Scene();
-		// this.scene.background = new THREE.Color( 0x00a0f0 );
+		//  this.scene.background = new THREE.Color( 0x00a0f0 );
 
 		//   const ambient = new THREE.AmbientLight( 0x000000 );
-		 const ambient = new THREE.AmbientLight( 0x000000 );
+		 const ambient = new THREE.AmbientLight( 0x000000 , 100);
           this.scene.add( ambient );
 
-        const light = new THREE.DirectionalLight( 0xaaaaaa );
+        const light = new THREE.DirectionalLight( 0xaaaaaa, .9);
         light.position.set( 30, 100, 40 );
         light.target.position.set( 0, 0, 0 );
 
@@ -146,7 +152,7 @@ class Game{
 	
 	loadEnvironment(loader){
 		const game = this;
-		loader.load(`${this.assetsPath}fbx/escola12.fbx`, function(object){
+		loader.load(`${this.assetsPath}fbx/town.fbx`, function(object){
 			game.environment = object;
 			game.colliders = [];
 			game.scene.add(object);
@@ -162,16 +168,16 @@ class Game{
 				}
 			} );
 			
-			const tloader = new THREE.CubeTextureLoader();
-			tloader.setPath( `${game.assetsPath}images/` );
+			// const tloader = new THREE.CubeTextureLoader();
+			// tloader.setPath( `${game.assetsPath}images/` );
 
-			var textureCube = tloader.load( [
-				'px.jpg', 'nx.jpg',
-				'py.jpg', 'ny.jpg',
-				'pz.jpg', 'nz.jpg'
-			] );
+			// var textureCube = tloader.load( [
+			// 	'px.jpg', 'nx.jpg',
+			// 	'py.jpg', 'ny.jpg',
+			// 	'pz.jpg', 'nz.jpg'
+			// ] );
 
-			game.scene.background = textureCube;
+			// game.scene.background = textureCube;
 			
 			game.loadNextAnim(loader);
 		})
@@ -224,7 +230,7 @@ class Game{
 		front.position.set(112, 100, 600);
 		front.parent = this.player.object;
 		const back = new THREE.Object3D();
-		back.position.set(0, 150, -700);
+		back.position.set(0, 140, -700);
 		back.parent = this.player.object;
 		const chat = new THREE.Object3D();
 		chat.position.set(0, 200, -450);
@@ -240,6 +246,16 @@ class Game{
 		collect.parent = this.player.object;
 		this.cameras = { front, back, wide, overhead, collect, chat };
 		 this.activeCamera = this.cameras.back;	
+	}
+
+	createAudio(){
+		const audioElement = document.getElementById( 'music' );
+			audioElement.play();
+
+			this.positionalAudio = new THREE.PositionalAudio( this.listener );
+			positionalAudio.setMediaElementSource( audioElement );
+			positionalAudio.setRefDistance( 1 );
+			positionalAudio.setDirectionalCone( 180, 230, 0.1 );
 	}
 	
 	showMessage(msg, fontSize=20, onOK=null){
@@ -339,7 +355,7 @@ class Game{
 			});
 			if (players.length>0){
 				const player = players[0];
-				console.log(`onMouseDown: player ${player.id}`);
+				// console.log(`onMouseDown: player ${player.id}`);
 				this.speechBubble.player = player;
 				this.speechBubble.update('');
 				this.scene.add(this.speechBubble.mesh);
@@ -350,14 +366,14 @@ class Game{
 		}else{
 			//Is the chat panel visible?
 			if (chat.style.bottom=='0px' && (window.innerHeight - event.clientY)>40){
-				console.log("onMouseDown: No player found");
+				// console.log("onMouseDown: No player found");
 				if (this.speechBubble.mesh.parent!==null) this.speechBubble.mesh.parent.remove(this.speechBubble.mesh);
 				delete this.speechBubble.player;
 				delete this.chatSocketId;
 				chat.style.bottom = '-50px';
 				this.activeCamera = this.cameras.back;
 			}else{
-				console.log("onMouseDown: typing");
+				// console.log("onMouseDown: typing");
 			}
 		}
 	}
